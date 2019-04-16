@@ -1,0 +1,17 @@
+extends ../layouts/layout.pug 
+block content
+  .container
+    h2.main-header Iniciar Sesión
+    //- formulario
+    form#id.main-form(action="verify" method="POST")
+
+      .control-form
+        label.label-form(for="user") Usuario:
+        input.input-form(type="text" id="user" name="user")
+
+      .control-form
+        label.label-form(for="password") Contraseña 
+        input.input-form#password(type="password" name="password")
+
+      .wrapper-button
+        button.btn.btn-primary(type="submit") Enviar

@@ -1,0 +1,31 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: sans-serif;
+	font-weight: lighter;
+	&:after,
+	&:before {
+		box-sizing: inherit;
+	}
+}
+
+header, nav, section, article, 
+main, aside, div {
+	display: block;
+}
+
+input {
+	padding: .2rem;
+	margin-bottom: .4rem;
+	&:focus{
+		outline: none;
+	}
+}
+
+button {
+	border: none;
+	outline: none;
+	padding: .5rem 1rem;
+	cursor: pointer;
+}
