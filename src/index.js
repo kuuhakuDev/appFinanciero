@@ -34,7 +34,7 @@ app
   }))
 
 // rutas
-app 
+app
   .use('/', mainRoutes)
   .use('/users', usersRoutes)
   .use('/app', appRoutes)
