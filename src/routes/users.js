@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const db = require('../database/register.js')
 
 router
   .get('/login', (req, res) => {
@@ -14,6 +15,14 @@ router
   .post('/register', (req, res) => {
     console.log(req.body)
     res.send('Received')
+    signin(req.body) //signin
   })
 
 module.exports = router
+
+//signin
+function signin(body) {
+
+  db.register(body);
+
+}
