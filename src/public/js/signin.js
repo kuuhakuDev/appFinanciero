@@ -45,7 +45,12 @@ function checkPassword(e) {
     error.innerHTML += '<li id="warning">Por favor introduzca una contraseña.</li>';
 
     e.preventDefault();
-  } else if (password.value != conf_password.value) {
+  } else if (password.value.length < 8) {
+    console.log("Las claves es muy corta.");
+    error.innerHTML += '<li id="warning">La contraseña es muy corta.</li>';
+
+    e.preventDefault();
+  }else if (password.value != conf_password.value) {
     console.log("Las claves no coinciden.");
     error.innerHTML += '<li id="warning">Las contraseñas no coinciden.</li>';
 
