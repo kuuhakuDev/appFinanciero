@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const db = require('../database/register.js')
+const db = require('../utils/register')
 
 router
   .get('/login', (req, res) => {

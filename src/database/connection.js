@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 mongoose.connect(mongoLocation, mongoConfig)
 // Devuelve una promesa, devuelve un mensaje por consola si se conecta
 // satisfactoriamente a la base de datos
-  .then( db => console.log('The database is connected'))
+  .then( db => console.log('Se ha conectado la base de datos'))
 // si existe un error lo arroja a la consola
   .catch( err => console.log(err))
 

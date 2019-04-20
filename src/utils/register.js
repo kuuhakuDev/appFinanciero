@@ -7,9 +7,9 @@ const User = require('../models/User')
 async function register(body) {
 
   // Destructuring de los datos pasados por parametros
-  const { name, lastname, email, password } = body;
-
-  const user = await new User({ name, lastname, email, pwd: password });
+  const { name, lastname, email, password } = body
+      , user = await new User({ name, lastname, email, pwd: password })
+      , ready = await user.save();
 
   if ( user ) {
     console.log('Se ha registrado correctamente');

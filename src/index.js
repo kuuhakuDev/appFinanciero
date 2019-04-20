@@ -15,6 +15,8 @@ const express = require('express')
 
 // Inicializaciones
 app = express()
+  // Base de datos
+require('./database/connection');
 
 // Configuraciones
 app

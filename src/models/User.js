@@ -13,4 +13,4 @@ userSchema =
   
 User = model('User', userSchema);
 
-module.export = User;
+module.exports = User;
