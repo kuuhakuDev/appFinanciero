@@ -4,6 +4,8 @@ const express = require('express')
     , sassMiddleware = require('node-sass-middleware')
     , path = require('path')
     , bodyParser = require('body-parser')
+    , session = require('express-session')
+    , passport = require('passport')
 
     , port = process.env.PORT || 3000
     , srcPath = __dirname + '/assets'
@@ -15,6 +17,7 @@ const express = require('express')
 
 // Inicializaciones
 app = express()
+require('./config/passport');
   // Base de datos
 require('./database/connection');
 
@@ -28,12 +31,19 @@ app
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: false }))
   .use(morgan('dev'))
+  .use(session({
+      secret: 'company'
+    , resave: true
+    , saveUninitialized: true
+  }))
   .use(sassMiddleware({
       src: srcPath
     , dest: destPath
     , debug: true
     , outputStyle: 'nested'
   }))
+  .use(passport.initialize())
+  .use(passport.session())
 
 // rutas
 app
