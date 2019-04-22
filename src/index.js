@@ -6,6 +6,7 @@ const express = require('express')
     , bodyParser = require('body-parser')
     , session = require('express-session')
     , passport = require('passport')
+    , flash = require('connect-flash')
 
     , port = process.env.PORT || 3000
     , srcPath = __dirname + '/assets'
@@ -17,7 +18,7 @@ const express = require('express')
 
 // Inicializaciones
 app = express()
-require('./config/passport');
+require('./auth/local-auth');
   // Base de datos
 require('./database/connection');
 
@@ -42,8 +43,16 @@ app
     , debug: true
     , outputStyle: 'nested'
   }))
+  .use(flash())
   .use(passport.initialize())
   .use(passport.session())
+
+// Expone los mensajes de flash en toda el app
+app.use((req, res, next) => {
+  res.locals.registerMessage = req.flash('registerMessage')
+  res.locals.loginMessage = req.flash('loginMessage')
+  next()
+})
 
 // rutas
 app
