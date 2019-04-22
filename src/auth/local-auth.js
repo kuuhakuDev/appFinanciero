@@ -53,11 +53,11 @@ passport.use('local-login', new Strategy(configPassport,
   const user = await User.findOne({ email: email })
 
   if ( !user ) {
-    return done(null, false, req.flash('local-login', 'El usuario no existe'))
+    return done(null, false, req.flash('loginMessage', 'El usuario no existe'))
   }
 
   if ( !user.comparePassword(password)) {
-    return done(null, false, { message: 'Las contraseñas no coinciden'})
+    return done(null, false, req.flash('loginMessage', 'Las contraseña es incorrecta'))
   }
 
   done(null, user)

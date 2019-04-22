@@ -11,5 +11,11 @@ html(lang="es")
   //- Cabecera de la página
   header.header
     h1.title-header Título Página Web
+
+  if registerMessage
+    p= registerMessage
+  if loginMessage
+    p= loginMessage
+
   block content
   //- script(src="")
