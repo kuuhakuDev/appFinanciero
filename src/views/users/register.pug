@@ -1,0 +1,34 @@
+extends ../layouts/layout.pug
+block content
+  .container
+    h2.main-header Regístrate
+    //- formulario
+    form#id.main-form(action="register" method="POST")
+
+      .control-form
+        label.label-form(for="name") Nombre
+        input.input-form(type="text" id="name" name="name")
+
+      .control-form
+        label.label-form(for="lastname") Apellido
+        input.input-form(type="text" id="lastname" name="lastname")
+
+      .control-form
+        label.label-form(for="email") Email
+        input.input-form(type="email" id="email" name="email")
+
+      .control-form
+        label.label-form(for="password") Contraseña
+        input.input-form#password(type="password" name="password")
+
+      .control-form
+        label.label-form(for="conf_password") Confirmar contraseña
+        input.input-form#conf_password(type="password" name="conf_password")
+
+      ul#error.error
+
+      .wrapper-button
+        button.btn.btn-primary(type="submit") Enviar
+
+  block scripts
+    script(src="/js/signin.js")
