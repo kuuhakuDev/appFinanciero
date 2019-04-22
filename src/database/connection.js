@@ -1,16 +1,16 @@
-// Importar el módulo de mongoose
-var mongoose = require ('mongoose');
+const mongoose = require('mongoose')
+    , mongoLocation = 'mongodb://127.0.0.1:27017/company'
+    , mongoConfig = {
+          useNewUrlParser: true
+        , useFindAndModify: true
+      }
 
-// Configurar la conexión de mangosta por defecto
-var mongoDB = 'mongodb://127.0.0.1:27017/company';
-mongoose.connect (mongoDB);
-// Consigue que Mongoose use la biblioteca de promesa global
-mongoose.Promise = global.Promise;
-// Obtener la conexión por defecto
-var db = mongoose.connection;
+// conecto a la base de datos.
+mongoose.connect(mongoLocation, mongoConfig)
+// Devuelve una promesa, devuelve un mensaje por consola si se conecta
+// satisfactoriamente a la base de datos
+  .then( db => console.log('Se ha conectado la base de datos'))
+// si existe un error lo arroja a la consola
+  .catch( err => console.log(err))
 
-// Vincular la conexión al evento de error (para obtener notificación de
-// errores de conexión)
-db.on ('error', console.error.bind (console, 'Error de conexión MongoDB:'));
-
-module.exports = db
+module.exports = mongoose;

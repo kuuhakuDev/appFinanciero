@@ -1,14 +1,16 @@
 const router = require('express').Router()
-const db = require('../database/register.js')
+    , db = require('../utils/register')
+    , passport = require('passport')
 
 router
   .get('/login', (req, res) => {
     res.render('users/login')
   })
-  .post('/verify', (req, res) => {
-    console.log(req.body)
-    res.send('Received')
-  })
+  .post('/login', passport.authenticate('local-login', {
+      successRedirect: '/dashboard'
+    , failureRedirect: '/users/login'
+    , passReqToCallback: true
+  }))
   .get('/signin', (req, res) => {
     res.render('users/signin')
   })
