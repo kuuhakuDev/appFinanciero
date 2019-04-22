@@ -14,7 +14,9 @@
   "author": "David y Victor",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "mongoose": "^5.5.2",
