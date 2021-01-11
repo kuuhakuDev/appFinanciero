@@ -18,7 +18,7 @@ Los usuarios tendran los siguientes campos:
 * Nombre
 * Email
 * Password
-* cookies
+* Cookies
 
 Las cookies seran utilizadas para administrar la sesion de los usuarios y gestiones de seguridad
 
