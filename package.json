@@ -7,6 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "mongodb": "^3.5.9",
     "next": "latest",
     "react": "^16.13.1",
