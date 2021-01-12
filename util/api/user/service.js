@@ -55,6 +55,25 @@ export async function add(user){
     }
 }
 
+//Falta seguir codeando
+export async function singIn(email, pass){
+    const { db } = await connectToDatabase();
+
+    const query = await db
+    .collection("users_dev")
+    .findOne(
+        {Email: email}, 
+        {projection: {_id: 0, Email: 0, Cookies: 0}}
+    );
+
+    if(verifyPass(query.Password, pass)){
+        
+    }
+
+    reply.reply = query;
+    return reply;
+}
+
 export async function getByCookies(cookie){
     const { db } = await connectToDatabase();
 
