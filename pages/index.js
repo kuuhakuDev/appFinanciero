@@ -2,15 +2,13 @@ import Layout from '../components/layout';
 
 const Home = () => (
   <Layout>
-    <h1>Next Auth App</h1>
+    <h1>Finanzas Personales</h1>
     <p>
-      This is a sample project that uses{' '}
-      <a href={`https://github.com/iaincollins/next-auth`}>NextAuth.js</a> v2 to
-      add authentication to <a href={`https://nextjs.org/`}>Next.js</a>.
+      Pequeño sistema para la gestión de tus finanzas personales.
     </p>
     <p>
-      See <a href={`https://next-auth.js.org/`}>next-auth.js.org</a> for more
-      information and documentation.
+      A través del registro de tus movimientos (ingresos y egresos), podrás llevar un control de tus 
+      finanzas, además, podrás realizar tender varias cuentas, clasificar movimientos y generar reportes.
     </p>
   </Layout>
 );
