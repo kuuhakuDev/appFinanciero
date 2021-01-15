@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
 import Button from '@material-ui/core/Button'
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import CuentaItem from '../components/core/cuentaItem'
 
 function getModalStyle() {
     const top = 50;
@@ -31,7 +32,7 @@ function NumberFormatCustom(props) {
     const { inputRef, onChange, ...other } = props;
   
     return (
-      <NumberFormat {...other} getInputRef={inputRef}  thousandSeparator isNumericString prefix="C$"
+      <NumberFormat {...other} getInputRef={inputRef}  thousandSeparator isNumericString prefix=""
       onValueChange={(values) => {onChange({
             target: {
               name: props.name,
@@ -53,10 +54,10 @@ export default function Cuentas() {
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">Crear cuenta</h2>
       <div>
-        <TextField id="standard-full-width" label="Nombre de la cuenta"
+        <TextField id="name-account-input" label="Nombre de la cuenta"
         helperText="25 caracteres como maximo" fullWidth margin="normal" inputProps={{ maxLength: 25 }}/>
 
-        <TextField id="standard-full-width" label="Saldo inicial de la cuenta" helperText="Solo numeros"
+        <TextField id="saldo-account-input" label="Saldo inicial de la cuenta" helperText="Solo numeros"
         fullWidth margin="normal" inputProps={{ maxLength: 25 }} InputProps={{inputComponent: NumberFormatCustom,}}/>
 
         <Button variant="contained" color="primary">Crear</Button>
@@ -71,6 +72,7 @@ export default function Cuentas() {
   return (
     <LayoutApp>
       <FloatActionButton bodyModal={bodyModal}/>
+      <CuentaItem/>
     </LayoutApp>
   )
 }
