@@ -50,6 +50,21 @@ export default function Cuentas() {
     const [modalStyle] = React.useState(getModalStyle); 
   const [ session, loading ] = useSession()
 
+  function sendData(){
+    let nameAccount = document.querySelector('#name-account-input').value
+    let saldoAccount = parseFloat(document.querySelector('#saldo-account-input').value.replaceAll(',', ''))
+    //Pruebas
+    fetch("http://localhost:3000/api/acount", {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify({name: nameAccount, saldo: saldoAccount}), // data can be `string` or {object}!
+      /* headers:{
+        'Content-Type': 'application/json'
+      } */
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => console.log('Success:', response));
+  }
+
   const bodyModal = (
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">Crear cuenta</h2>
@@ -60,7 +75,7 @@ export default function Cuentas() {
         <TextField id="saldo-account-input" label="Saldo inicial de la cuenta" helperText="Solo numeros"
         fullWidth margin="normal" inputProps={{ maxLength: 25 }} InputProps={{inputComponent: NumberFormatCustom,}}/>
 
-        <Button variant="contained" color="primary">Crear</Button>
+        <Button variant="contained" color="primary" onClick={sendData}>Crear</Button>
       </div>
     </div>
   );
