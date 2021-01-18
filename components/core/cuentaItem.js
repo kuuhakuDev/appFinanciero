@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import MenuItem from './menuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
@@ -45,9 +45,17 @@ function CuentaItem(props){
             <Paper className={classes.paper} elevation={1}>
                 <Paper className={classes.item} elevation={3}>
                     <Typography variant="subtitle1" noWrap className={classes.title} align="center">{title}</Typography>
+                    
                 </Paper>
-                <Typography className={classes.saldo} variant="subtitle2" noWrap align="center">Saldo:</Typography>
-                <Typography className={pos? classes.valorPos: classes.valorNeg} variant="h5" noWrap align="center">C$ {saldo}</Typography>
+                <Grid container>
+                    <Grid item xs={11}>
+                        <Typography className={classes.saldo} variant="subtitle2" noWrap align="center">Saldo:</Typography>
+                        <Typography className={pos? classes.valorPos: classes.valorNeg} variant="h5" noWrap align="center">C$ {saldo}</Typography>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <MenuItem/>
+                    </Grid>
+                </Grid>
             </Paper>
         </Grid>
     )
