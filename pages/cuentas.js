@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button'
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CuentaItem from '../components/core/cuentaItem'
 
+import { get } from '../util/api/cuentas/service'
+
 function getModalStyle() {
     const top = 50;
     const left = 50;
@@ -45,16 +47,18 @@ function NumberFormatCustom(props) {
   }
 
 
-export default function Cuentas() {
+export default function Cuentas({reply}) {
+  
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle); 
   const [ session, loading ] = useSession()
+  const [ accounts, setAccounts ] = React.useState(reply)
 
   function sendData(){
     let nameAccount = document.querySelector('#name-account-input').value
     let saldoAccount = parseFloat(document.querySelector('#saldo-account-input').value.replaceAll(',', ''))
     //Pruebas
-    fetch("http://localhost:3000/api/acount", {
+    fetch("http://localhost:3000/api/account", {
       method: 'POST', // or 'PUT'
       body: JSON.stringify({name: nameAccount, saldo: saldoAccount}), // data can be `string` or {object}!
       /* headers:{
@@ -62,7 +66,14 @@ export default function Cuentas() {
       } */
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success:', response));
+    .then(response => {
+      let acc = [];
+      accounts.forEach(element => {
+        acc.push(element);
+      });
+      acc.push(response.reply);
+      setAccounts(acc);
+    });
   }
 
   const bodyModal = (
@@ -87,7 +98,7 @@ export default function Cuentas() {
   return (
     <LayoutApp>
       <FloatActionButton bodyModal={bodyModal}/>
-      <CuentaItem/>
+      <CuentaItem accounts={accounts}/>
     </LayoutApp>
   )
 }
@@ -102,7 +113,10 @@ export async function getServerSideProps(context) {
         },
       }
   }
+
+  let reply = JSON.parse(JSON.stringify((await get(session.accessToken)).reply));
+
   return {
-    props: { session }
+    props: { session, reply: reply }
   }
 }

@@ -53,17 +53,14 @@ function CuentaItem(props){
     )
 }
 
-export default function CuentasContainer(){
-    const items = [
-        {title: "Cuenta de ahorro", saldo: 4098},
-        {title: "Cuenta de ingresos mensuales del trabajo", saldo: 7777},
-        {title: "Cuenta de deudas", saldo: -5600}
-    ]
+export default function CuentasContainer(props){
+    const items = props.accounts
+    
     return (
         <Grid container xs={12} spacing={3}>
                 {
                     items.map((item, index) =>
-                        <CuentaItem key={index} title={item.title} saldo={item.saldo}/>
+                        <CuentaItem key={index} title={item.name} saldo={item.saldo}/>
                     )
                 }
         </Grid>
