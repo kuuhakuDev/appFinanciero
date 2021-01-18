@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/client'
-import { add } from '../../util/api/cuentas/service'
+import { add, get } from '../../util/api/cuentas/service'
 
 export default async (req, res) => {
   const session = await getSession({ req })
@@ -8,12 +8,17 @@ export default async (req, res) => {
     var method = req.method;
     switch (method) {
         case "GET":
-
+            let get = await get(session.accessToken)
+            console.log(get)
+            res.status(get.code).json({
+              reply: get.reply,
+              error: get.error
+            });
             break;
         
         case "POST":
             let post = await add(session.accessToken, JSON.parse(req.body))
-            console.log(post)
+            //console.log(post)
             res.status(post.code).json({
                 reply: post.reply,
                 error: post.error
@@ -22,11 +27,11 @@ export default async (req, res) => {
         
         case "PUT":
             
-            break;
+          break;
     
         case "DELETE":
 
-            break;
+          break;
         default:
             break;
     }
