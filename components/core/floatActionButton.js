@@ -16,7 +16,7 @@ import Modal from '@material-ui/core/Modal';
 
 const useStyles = makeStyles((theme) => ({
     fab: {
-      position: 'absolute',
+      position: 'fixed',
       bottom: theme.spacing(7),
       right: theme.spacing(7),
     },
