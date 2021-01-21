@@ -1,7 +1,7 @@
 import React,{createContext,useState} from 'react';
 
-export default ({ children }) =>{
-    const [state,setState] = useState([]);
+export default ({ children, value }) =>{
+    const [state,setState] = useState(value);
     return (
             <AccountContext.Provider value={[state,setState]}>
                 {children}

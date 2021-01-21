@@ -1,6 +1,6 @@
 import { useSession, getSession } from 'next-auth/client'
 import LayoutApp from '../components/layoutApp'
-import AccountsProvider from '../components/context/accounts'
+import AccountsProvider, {AccountContext} from '../components/context/accounts'
 import AccountsContainer from '../components/accountContainer'
 
 import { get } from '../util/api/cuentas/service'
@@ -15,8 +15,8 @@ export default function Cuentas({reply}) {
 
   return (
     <LayoutApp>
-      <AccountsProvider>
-        <AccountsContainer reply={reply}/>
+      <AccountsProvider value={reply}>
+        <AccountsContainer /* reply={reply} *//>
       </AccountsProvider>
     </LayoutApp>
   )
@@ -33,9 +33,12 @@ export async function getServerSideProps(context) {
       }
   }
 
-  let reply = JSON.parse(JSON.stringify((await get(session.accessToken)).reply));
+  let response = JSON.parse(JSON.stringify((await get(session.accessToken)))).reply;
+  //response = (typeof response.reply == 'object')? [response.reply]: response.reply;
+  console.log(typeof response)
+  console.log(response)
 
   return {
-    props: { session, reply: reply }
+    props: { session, reply: response }
   }
 }

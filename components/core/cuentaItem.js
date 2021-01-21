@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from './menuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { AccountContext } from '../context/accounts'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CuentaItem(props){
+    const [accounts, setAccounts] = useContext(AccountContext);
+
     const classes = useStyles();
     const title = props.title;
     const saldo = props.saldo;
@@ -48,13 +51,22 @@ function CuentaItem(props){
     function del(){
       fetch("http://localhost:3000/api/account", {
         method: 'DELETE', // or 'PUT'
-        body: JSON.stringify({idAccount: props.idAccount}), // data can be `string` or {object}!
-        /* headers:{
-          'Content-Type': 'application/json'
-        } */
+        body: JSON.stringify({idAccount: props.idAccount}),
       }).then(res => res.json())
       .catch(error => console.error('Error:', error))
       .then(response => {
+        if(response.reply.deleted){
+            /* let index = accounts.map(function (acc) {return acc._id}).indexOf(props.idAccount)
+            console.log(index)
+            let list = accounts.splice(accounts[index,index])
+            console.log(list) */
+            let acc = [];
+            accounts.forEach(element => {if(element._id != props.idAccount)acc.push(element)});
+            console.log(acc)
+            setAccounts(acc)
+        }
+        console.log(response)
+
         /* let acc = [];
         accounts.forEach(element => {
           acc.push(element);
