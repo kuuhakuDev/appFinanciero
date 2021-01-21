@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { AccountContext } from '../context/accounts'
 
+//Estilos
 const useStyles = makeStyles((theme) => ({
     paper: {
         //width: 400,
@@ -56,23 +57,10 @@ function CuentaItem(props){
       .catch(error => console.error('Error:', error))
       .then(response => {
         if(response.reply.deleted){
-            /* let index = accounts.map(function (acc) {return acc._id}).indexOf(props.idAccount)
-            console.log(index)
-            let list = accounts.splice(accounts[index,index])
-            console.log(list) */
             let acc = [];
             accounts.forEach(element => {if(element._id != props.idAccount)acc.push(element)});
-            console.log(acc)
             setAccounts(acc)
         }
-        console.log(response)
-
-        /* let acc = [];
-        accounts.forEach(element => {
-          acc.push(element);
-        });
-        acc.push(response.reply);
-        setAccounts(acc); */
       });
     }
 
@@ -86,7 +74,6 @@ function CuentaItem(props){
             <Paper className={classes.paper} elevation={1}>
                 <Paper className={classes.item} elevation={3}>
                     <Typography variant="subtitle1" noWrap className={classes.title} align="center">{title}</Typography>
-                    
                 </Paper>
                 <Grid container>
                     <Grid item xs={11}>

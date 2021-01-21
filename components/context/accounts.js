@@ -1,6 +1,6 @@
 import React,{createContext,useState} from 'react';
 
-export default ({ children, value }) =>{
+export default function helper({ children, value }){
     const [state,setState] = useState(value);
     return (
             <AccountContext.Provider value={[state,setState]}>
