@@ -60,8 +60,10 @@ export default function modalNew(props){
         .then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response => {
-            accounts.push(response.reply)
-            setAccounts(accounts);
+            let acc = accounts.map(function (element){return element})
+            acc.push(response.reply)
+            setAccounts(acc);
+
         });
         props.close();
     }
