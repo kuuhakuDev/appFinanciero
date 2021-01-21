@@ -38,3 +38,19 @@ export async function get(token){
       return reply
     }
 }
+
+export async function del(token, id){
+  try {
+    await dbConnect()
+    let userId = (await getIdbyToken(token)).userId;
+    const deleted_account = await Account.deleteOne({_id: id, userId: userId});
+    console.log("Fue eliminada la cuenta: \n" + deleted_account)
+    reply.reply = {deleted: true};
+    reply.msg = "La cuenta fue eliminada con exito."
+    return reply
+  } catch (error) {
+    console.log("No se pudo por no se que: " + error)
+    reply.msg = "Ocurrio un error al intentar eliminar la cuenta."
+    return reply
+  }
+}

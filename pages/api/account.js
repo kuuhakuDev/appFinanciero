@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/client'
-import { add, get } from '../../util/api/cuentas/service'
+import { add, get, del } from '../../util/api/cuentas/service'
 
 export default async (req, res) => {
   const session = await getSession({ req })
@@ -30,7 +30,12 @@ export default async (req, res) => {
           break;
     
         case "DELETE":
-
+          let deleted = await del(session.accessToken, JSON.parse(req.body).idAccount)
+          console.log(deleted)
+          res.status(deleted.code).json({
+            reply: deleted.reply,
+            error: deleted.error
+          });
           break;
         default:
             break;
