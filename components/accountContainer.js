@@ -1,100 +1,19 @@
 import React, { useContext, useEffect } from 'react'
 import FloatActionButton from '../components/core/floatActionButton'
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button'
 import CuentaItem from '../components/core/cuentaItem'
-import NumberFormat from 'react-number-format';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
 import {AccountContext} from '../components/context/accounts'
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-  
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
-    };
-  }
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        position: 'absolute',
-        width: 400,
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-      },
-}));
-
-function NumberFormatCustom(props) {
-    const { inputRef, onChange, ...other } = props;
-  
-    return (
-      <NumberFormat {...other} getInputRef={inputRef}  thousandSeparator isNumericString prefix=""
-      onValueChange={(values) => {onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
-          });
-        }}
-      />
-    );
-  }
 
   export default function AccountsContainer({reply}){
 
-    const classes = useStyles();
-    const [modalStyle] = React.useState(getModalStyle); 
     const [ accounts, setAccounts ] = useContext(AccountContext);
 
     useEffect(() => {
         setAccounts(reply)
     })
 
-    const bodyModal = (
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Crear cuenta</h2>
-          <div>
-            <TextField id="name-account-input" label="Nombre de la cuenta"
-            helperText="25 caracteres como maximo" fullWidth margin="normal" inputProps={{ maxLength: 25 }}/>
-    
-            <TextField id="saldo-account-input" label="Saldo inicial de la cuenta" helperText="Solo numeros"
-            fullWidth margin="normal" inputProps={{ maxLength: 25 }} InputProps={{inputComponent: NumberFormatCustom,}}/>
-    
-            <Button variant="contained" color="primary" onClick={sendData}>Crear</Button>
-          </div>
-        </div>
-      );
-
-    function sendData(){
-        let nameAccount = document.querySelector('#name-account-input').value
-        let saldoAccount = parseFloat(document.querySelector('#saldo-account-input').value.replaceAll(',', ''))
-        //Pruebas
-        fetch("http://localhost:3000/api/account", {
-          method: 'POST', // or 'PUT'
-          body: JSON.stringify({name: nameAccount, saldo: saldoAccount}), // data can be `string` or {object}!
-          /* headers:{
-            'Content-Type': 'application/json'
-          } */
-        }).then(res => res.json())
-        .catch(error => console.error('Error:', error))
-        .then(response => {
-          let acc = [];
-          accounts.forEach(element => {
-            acc.push(element);
-          });
-          acc.push(response.reply);
-          setAccounts(acc);
-        });
-      }
-
       return (
           <>
-            <FloatActionButton bodyModal={bodyModal}/>
+            <FloatActionButton/>
             <CuentaItem accounts={accounts}/>
           </>
       )

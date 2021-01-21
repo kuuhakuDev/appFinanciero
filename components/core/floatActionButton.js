@@ -1,7 +1,7 @@
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import ModalNew from '../pages/accounts/modalNew'
   
   function getModalStyle() {
     const top = 50;
@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FloatingActionButtons(props) {
-    const body = props.bodyModal;
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
   
@@ -40,14 +39,8 @@ export default function FloatingActionButtons(props) {
             <Fab className={classes.fab} color="primary" aria-label="add" onClick={handleOpen}>
                 <AddIcon />
             </Fab>
-            <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-        >
-            {body}
-        </Modal>
+            <ModalNew close={handleClose} open={open}/>
+            
         </div>
     );
   }

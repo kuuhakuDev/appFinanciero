@@ -4,14 +4,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-const options = [
-  'Editar',
-  'Borrar',
-];
-
 const ITEM_HEIGHT = 48;
 
-export default function LongMenu() {
+export default function LongMenu(props) {
+  const options = props.options
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -19,8 +15,10 @@ export default function LongMenu() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (event) => {
     setAnchorEl(null);
+    let index = options.map(function (e) {return e.op}).indexOf(event.currentTarget.innerText)
+    if(index != -1)options[index].fun();
   };
 
   return (
@@ -47,8 +45,8 @@ export default function LongMenu() {
         }}
       >
         {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-            {option}
+          <MenuItem key={option.op} selected={option.op === 'Pyxis'} onClick={handleClose}>
+            {option.op}
           </MenuItem>
         ))}
       </Menu>

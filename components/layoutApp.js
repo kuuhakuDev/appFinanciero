@@ -17,6 +17,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Head from 'next/head';
+import Link from 'next/link'
 
 const drawerWidth = 240;
 
@@ -78,10 +79,12 @@ function ResponsiveDrawer(props) {
           {text: 'Movimientos', url: '/movimientos'},
           {text: 'Categorias', url: '/Categorias'}, 
           {text: 'Reportes', url: '/Reportes'}].map((text, index) => (
-          <ListItemLink button key={index} href={text.url}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text.text} />
-          </ListItemLink>
+            <Link href={text.url} passHref>
+              <ListItemLink button key={index} /* href={text.url} */>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text.text} />
+              </ListItemLink>
+            </Link>
         ))}
       </List>
       <Divider />

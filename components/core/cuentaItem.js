@@ -40,6 +40,35 @@ function CuentaItem(props){
     const title = props.title;
     const saldo = props.saldo;
     const pos = (saldo >= 0)? true: false;
+
+    function edit(){
+        console.log("Me estoy editando :3")
+    }
+
+    function del(){
+      fetch("http://localhost:3000/api/account", {
+        method: 'DELETE', // or 'PUT'
+        body: JSON.stringify({idAccount: props.idAccount}), // data can be `string` or {object}!
+        /* headers:{
+          'Content-Type': 'application/json'
+        } */
+      }).then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      .then(response => {
+        /* let acc = [];
+        accounts.forEach(element => {
+          acc.push(element);
+        });
+        acc.push(response.reply);
+        setAccounts(acc); */
+      });
+    }
+
+    const options = [
+        {op: "Editar", fun: edit},
+        {op: "Eliminar", fun: del},
+    ]
+
     return (
         <Grid item xs={12} md={6} lg={4} xl={3}>
             <Paper className={classes.paper} elevation={1}>
@@ -53,7 +82,7 @@ function CuentaItem(props){
                         <Typography className={pos? classes.valorPos: classes.valorNeg} variant="h5" noWrap align="center">C$ {saldo}</Typography>
                     </Grid>
                     <Grid item xs={1}>
-                        <MenuItem/>
+                        <MenuItem options={options}/>
                     </Grid>
                 </Grid>
             </Paper>
@@ -68,7 +97,7 @@ export default function CuentasContainer(props){
         <Grid container xs={12} spacing={3}>
                 {
                     items.map((item, index) =>
-                        <CuentaItem key={index} title={item.name} saldo={item.saldo}/>
+                        <CuentaItem key={index} idAccount={item._id} title={item.name} saldo={item.saldo}/>
                     )
                 }
         </Grid>
