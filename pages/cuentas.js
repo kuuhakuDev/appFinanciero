@@ -13,7 +13,7 @@ export default function Cuentas({reply}) {
   if (!session) return <p>Access Denied</p>
 
   return (
-    <LayoutApp>
+    <LayoutApp title="Cuentas" avatar={session.user.image}>
       <AccountsProvider value={reply}>
         <AccountsContainer/>
       </AccountsProvider>
