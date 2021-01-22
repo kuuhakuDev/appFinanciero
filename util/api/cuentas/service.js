@@ -3,7 +3,7 @@ import Account from './model'
 import { getIdbyToken } from '../user/service'
 import {reply} from "../reply"
 
-export async function add(token, data){    
+export async function add(token, data){ 
 
   try {
       await dbConnect()
@@ -13,11 +13,13 @@ export async function add(token, data){
       ) /* create a new model in the database */
       console.log("Agregado: " + account)
       reply.reply = account;
-      reply.msg = "Cuenta creada con exito."
+      reply.msg = "La cuenta fue creada con exito!."
       return reply
     } catch (error) {
       console.log("No se pudo por no se que: " + error)
-      reply.msg = "Ocurrio un error al intentar crear la cuenta."
+      reply.code = 500;
+      reply.type = 'error'
+      reply.msg = "Ocurrio un error al intentar crear la cuenta.";
       return reply
     }
 }
@@ -34,6 +36,7 @@ export async function get(token){
       return reply
     } catch (error) {
       console.log("No se pudo por no se que: " + error)
+
       reply.msg = "Ocurrio un error al intentar crear la cuenta."
       return reply
     }

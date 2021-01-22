@@ -17,13 +17,14 @@ export default async (req, res) => {
             break;
         
         case "POST":
-            let post = await add(session.accessToken, JSON.parse(req.body))
-            //console.log(post)
-            res.status(post.code).json({
-                reply: post.reply,
-                error: post.error
-              });
-            break;
+          let post = await add(session.accessToken, JSON.parse(req.body))
+          //console.log(post)
+          res.status(post.code).json({
+              reply: post.reply,
+              type: post.type,
+              msg: post.msg,
+            });
+          break;
         
         case "PUT":
             
@@ -31,10 +32,11 @@ export default async (req, res) => {
     
         case "DELETE":
           let deleted = await del(session.accessToken, JSON.parse(req.body).idAccount)
-          console.log(deleted)
+          //console.log(deleted)
           res.status(deleted.code).json({
             reply: deleted.reply,
-            error: deleted.error
+            type: deleted.type,
+            msg: deleted.msg,
           });
           break;
         default:

@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 import Modal from '../../core/Modal'
 import {AccountContext} from '../../context/accounts'
+import { useSnackbar } from 'notistack';
 
 function getModalStyle() {
     const top = 50;
@@ -48,8 +49,9 @@ export default function modalNew(props){
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle); 
     const [ accounts, setAccounts ] = useContext(AccountContext);
+    const { enqueueSnackbar } = useSnackbar();
 
-    function sendData(){
+    async function sendData(){
         let nameAccount = document.querySelector('#name-account-input').value
         let saldoAccount = parseFloat(document.querySelector('#saldo-account-input').value.replaceAll(',', ''))
         
@@ -58,12 +60,15 @@ export default function modalNew(props){
             body: JSON.stringify({name: nameAccount, saldo: saldoAccount}),
             })
         .then(res => res.json())
-        .catch(error => console.error('Error:', error))
+        .catch(error => {
+          console.error('Error:', error)
+          enqueueSnackbar(error, { variant: 'error' });
+        })
         .then(response => {
             let acc = accounts.map(function (element){return element})
             acc.push(response.reply)
             setAccounts(acc);
-
+            enqueueSnackbar(response.msg, { variant: response.type });
         });
         props.close();
     }

@@ -3,6 +3,7 @@ import LayoutApp from '../components/layoutApp'
 import AccountsProvider from '../components/context/accounts'
 import AccountsContainer from '../components/accountContainer'
 import { useSession, getSession } from 'next-auth/client'
+import { SnackbarProvider } from 'notistack';
 
 export default function Cuentas({reply}) {
   
@@ -13,11 +14,13 @@ export default function Cuentas({reply}) {
   if (!session) return <p>Access Denied</p>
 
   return (
-    <LayoutApp title="Cuentas" avatar={session.user.image}>
-      <AccountsProvider value={reply}>
-        <AccountsContainer/>
-      </AccountsProvider>
-    </LayoutApp>
+    <SnackbarProvider maxSnack={3}>
+      <LayoutApp title="Cuentas" avatar={session.user.image}>
+        <AccountsProvider value={reply}>
+          <AccountsContainer/>
+        </AccountsProvider>
+      </LayoutApp>
+    </SnackbarProvider>
   )
 }
 

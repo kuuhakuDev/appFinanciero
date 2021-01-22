@@ -4,7 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import MenuItem from './menuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { AccountContext } from '../context/accounts'
+import { AccountContext } from '../context/accounts';
+import { useSnackbar } from 'notistack';
 
 //Estilos
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CuentaItem(props){
     const [accounts, setAccounts] = useContext(AccountContext);
+    const { enqueueSnackbar } = useSnackbar();
 
     const classes = useStyles();
     const title = props.title;
@@ -49,17 +51,21 @@ function CuentaItem(props){
         console.log("Me estoy editando :3")
     }
 
-    function del(){
+    async function del(){
       fetch("http://localhost:3000/api/account", {
         method: 'DELETE', // or 'PUT'
         body: JSON.stringify({idAccount: props.idAccount}),
       }).then(res => res.json())
-      .catch(error => console.error('Error:', error))
+      .catch(error => {
+        console.error('Error:', error)
+        enqueueSnackbar(response.msg, { variant: 'error' });
+      })
       .then(response => {
         if(response.reply.deleted){
             let acc = [];
             accounts.forEach(element => {if(element._id != props.idAccount)acc.push(element)});
             setAccounts(acc)
+            enqueueSnackbar(response.msg, { variant: response.type });
         }
       });
     }
