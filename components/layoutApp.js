@@ -2,25 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Head from 'next/head';
-import Link from 'next/link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
+import Drawer from './core/drawer';
 
 const drawerWidth = 240;
 
@@ -28,12 +19,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     display: 'flex',
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
   },
   title:{
     flexGrow: 1,
@@ -65,11 +50,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
+const mainList = [
+  {text: 'Inicio', url: '/inicio'},
+  {text: 'Cuentas', url: '/cuentas'}, 
+  {text: 'Movimientos', url: '/movimientos'},
+  {text: 'Categorias', url: '/Categorias'}, 
+  {text: 'Reportes', url: '/Reportes'}
+]
 
-function ResponsiveDrawer(props) {
+const secondList = ['Configuracion', 'Perfil']
+
+function Layout(props) {
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -89,37 +80,6 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        {[
-          {text: 'Inicio', url: '/inicio'},
-          {text: 'Cuentas', url: '/cuentas'}, 
-          {text: 'Movimientos', url: '/movimientos'},
-          {text: 'Categorias', url: '/Categorias'}, 
-          {text: 'Reportes', url: '/Reportes'}].map((text, index) => (
-            <Link href={text.url} passHref>
-              <ListItemLink button key={index} /* href={text.url} */>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text.text} />
-              </ListItemLink>
-            </Link>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['Configuracion', 'Perfil'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
@@ -128,6 +88,7 @@ function ResponsiveDrawer(props) {
       <title>Finanzas Personales</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
+
     <div className={classes.root}>
       <CssBaseline />{/**Reset CSS */}
       <AppBar position="fixed" className={classes.appBar}>
@@ -175,37 +136,11 @@ function ResponsiveDrawer(props) {
             </div>
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
+
+
+      <Drawer mainList={mainList} secondList={secondList} toggle={handleDrawerToggle} open={mobileOpen}/>
+
+
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {props.children}
@@ -215,7 +150,7 @@ function ResponsiveDrawer(props) {
   );
 }
 
-ResponsiveDrawer.propTypes = {
+Layout.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -223,4 +158,4 @@ ResponsiveDrawer.propTypes = {
   window: PropTypes.func,
 };
 
-export default ResponsiveDrawer;
+export default Layout;
