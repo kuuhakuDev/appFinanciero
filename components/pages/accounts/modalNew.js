@@ -53,11 +53,11 @@ export default function modalNew(props){
 
     async function sendData(){
         let nameAccount = document.querySelector('#name-account-input').value
-        let saldoAccount = parseFloat(document.querySelector('#saldo-account-input').value.replaceAll(',', ''))
+        /* let saldoAccount = parseFloat(document.querySelector('#saldo-account-input').value.replaceAll(',', '')) */
         
         fetch("http://localhost:3000/api/account", {
             method: 'POST', // or 'PUT'
-            body: JSON.stringify({name: nameAccount, saldo: saldoAccount}),
+            body: JSON.stringify({name: nameAccount/* , saldo: saldoAccount */}),
             })
         .then(res => res.json())
         .catch(error => {
@@ -80,8 +80,8 @@ export default function modalNew(props){
             <TextField id="name-account-input" label="Nombre de la cuenta"
             helperText="25 caracteres como maximo" fullWidth margin="normal" inputProps={{ maxLength: 25 }}/>
     
-            <TextField id="saldo-account-input" label="Saldo inicial de la cuenta" helperText="Solo numeros"
-            fullWidth margin="normal" inputProps={{ maxLength: 25 }} InputProps={{inputComponent: NumberFormatCustom,}}/>
+            {/* <TextField id="saldo-account-input" label="Saldo inicial de la cuenta" helperText="Solo numeros"
+            fullWidth margin="normal" inputProps={{ maxLength: 25 }} InputProps={{inputComponent: NumberFormatCustom,}}/> */}
     
             <Button variant="contained" color="primary" onClick={sendData}>Crear</Button>
           </div>
