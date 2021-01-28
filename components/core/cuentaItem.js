@@ -76,22 +76,20 @@ function CuentaItem(props){
     ]
 
     return (
-        <Grid item xs={12} md={6} lg={4} xl={3}>
-            <Paper className={classes.paper} elevation={1}>
-                <Paper className={classes.item} elevation={3}>
-                    <Typography variant="subtitle1" noWrap className={classes.title} align="center">{title}</Typography>
-                </Paper>
-                <Grid container>
-                    <Grid item xs={11}>
-                        <Typography className={classes.saldo} variant="subtitle2" noWrap align="center">Saldo:</Typography>
-                        <Typography className={pos? classes.valorPos: classes.valorNeg} variant="h5" noWrap align="center">C$ {saldo}</Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                        <MenuItem options={options}/>
-                    </Grid>
-                </Grid>
+        <Paper className={classes.paper} elevation={1}>
+            <Paper className={classes.item} elevation={3}>
+                <Typography variant="subtitle1" noWrap className={classes.title} align="center">{title}</Typography>
             </Paper>
-        </Grid>
+            <Grid container>
+                <Grid item xs={11}>
+                    <Typography className={classes.saldo} variant="subtitle2" noWrap align="center">Saldo:</Typography>
+                    <Typography className={pos? classes.valorPos: classes.valorNeg} variant="h5" noWrap align="center">C$ {saldo}</Typography>
+                </Grid>
+                <Grid item xs={1}>
+                    <MenuItem options={options}/>
+                </Grid>
+            </Grid>
+        </Paper>
     )
 }
 
@@ -99,12 +97,14 @@ export default function CuentasContainer(props){
     const items = props.accounts
     
     return (
-        <Grid container xs={12} spacing={3}>
-                {
-                    items.map((item, index) =>
-                        <CuentaItem key={index} idAccount={item._id} title={item.name} saldo={item.saldo}/>
-                    )
-                }
+        <Grid container  spacing={3}>
+                    {
+                        items.map((item, index) =>
+                            <Grid key={index} item xs={12} sm={6} md={6} lg={4} xl={3}>
+                                <CuentaItem idAccount={item._id} title={item.name} saldo={item.saldo}/>
+                            </Grid>
+                        )
+                    }
         </Grid>
     )
 }

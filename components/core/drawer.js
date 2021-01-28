@@ -45,8 +45,8 @@ function ResponsiveDrawer(props) {
       <Divider />
       <List>
         {mainList.map((text, index) => (
-            <Link href={text.url} passHref>
-              <ListItemLink button key={index} /* href={text.url} */>
+            <Link key={index} href={text.url} passHref>
+              <ListItemLink button  /* href={text.url} */>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text.text} />
               </ListItemLink>
