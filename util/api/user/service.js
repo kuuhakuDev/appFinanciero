@@ -1,4 +1,4 @@
-import { connectToDatabase } from "../../mongodb";
+import { connectToDatabase } from "../../database/mongodb";
 import {reply} from "../reply"
 
 export async function getIdbyToken(token){

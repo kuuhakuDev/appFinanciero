@@ -1,4 +1,4 @@
-import { get } from '../util/api/cuentas/service'
+import { getAccounts } from '../util/database/model/modelAccounts'
 import LayoutApp from '../components/layoutApp'
 import AccountsProvider from '../components/context/accounts'
 import AccountsContainer from '../components/accountContainer'
@@ -35,7 +35,7 @@ export async function getServerSideProps(context) {
       }
   }
 
-  let response = JSON.parse(JSON.stringify((await get(session.accessToken)))).reply;
+  let response = JSON.parse(JSON.stringify((await getAccounts(session.accessToken))));
 
   return {
     props: { session, reply: response }
