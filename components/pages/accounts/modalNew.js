@@ -59,16 +59,22 @@ export default function modalNew(props){
             method: 'POST', // or 'PUT'
             body: JSON.stringify({name: nameAccount/* , saldo: saldoAccount */}),
             })
-        .then(res => res.json())
+        .then(res => {
+          var status = res.status;
+          var variant = (status >= 200 && status < 300)? "success": "error";
+          res.json().then(response => {
+            console.log(response);
+            let acc = accounts.map(function (element){return element});
+            acc.push(response.reply);
+            setAccounts(acc);
+            enqueueSnackbar(response.msg, { variant: variant });
+            console.log("El codigo de estado es -> " + status);
+          } );
+          
+        })
         .catch(error => {
           console.error('Error:', error)
           enqueueSnackbar(error, { variant: 'error' });
-        })
-        .then(response => {
-            let acc = accounts.map(function (element){return element})
-            acc.push(response.reply)
-            setAccounts(acc);
-            enqueueSnackbar(response.msg, { variant: response.type });
         });
         props.close();
     }
