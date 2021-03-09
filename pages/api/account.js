@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/client';
-import { add, getAccounts, del } from '../../util/database/model/modelAccounts';
+import { addAccount, getAccounts, delAccount } from '../../util/database/model/modelAccounts';
 import { StatusCodes }  from 'http-status-codes';
 
 export default async (req, res) => {
@@ -10,23 +10,15 @@ export default async (req, res) => {
     var method = req.method;
     switch (method) {
       case "GET":
-        try{
-          let Accounts = await getAccounts(session.accessToken);
-          resManager(StatusCodes.OK, Accounts, "Cuentas listadas con exito.");
-        }
-        catch(error){
-          resManager(StatusCodes.INTERNAL_SERVER_ERROR, null, error);
-        }
+        var param = [session.accessToken];
+        var property = resProperty(StatusCodes.OK, "Cuentas listadas con exito.");
+        await crud(getAccounts, param, property);
         break;
       
       case "POST":
-        try{
-          let account = await add(session.accessToken, JSON.parse(req.body));
-          resManager(StatusCodes.CREATED, account, "La cuenta fue creada con exito!");
-        }
-        catch(error){
-          resManager(StatusCodes.INTERNAL_SERVER_ERROR, null, error);
-        }
+        var param = [session.accessToken, JSON.parse(req.body)];
+        var property = resProperty(StatusCodes.CREATED, "La cuenta fue creada con exito.");
+        await crud(addAccount, param, property);
         break;
       
       case "PUT":
@@ -34,14 +26,11 @@ export default async (req, res) => {
         break;
   
       case "DELETE":
-        try{
-          let deleted = await del(session.accessToken, JSON.parse(req.body).idAccount)
-          resManager(StatusCodes.OK, deleted, "La cuenta fue eliminada con exito.");
-        }
-        catch(error){
-          resManager(StatusCodes.INTERNAL_SERVER_ERROR, null, error);
-        }
+        var param = [session.accessToken, JSON.parse(req.body).idAccount];
+        var property = resProperty(StatusCodes.OK, "La cuenta fue eliminada con exito.");
+        await crud(delAccount, param, property);
         break;
+        
       default:
         break;
     }
@@ -49,6 +38,20 @@ export default async (req, res) => {
   else {
     // Not Signed in
     res.status(401)
+  }
+
+  function resProperty(statusCode, msg){
+    return {statusCode: statusCode, msg: msg};
+  }
+
+  async function crud(fun, param, property){
+    try{
+      let account = await fun(...param);
+      resManager(property.statusCode, account, property.msg);
+    }
+    catch(error){
+      resManager(StatusCodes.INTERNAL_SERVER_ERROR, null, error);
+    }
   }
 
   function resManager(code, obj, msg){

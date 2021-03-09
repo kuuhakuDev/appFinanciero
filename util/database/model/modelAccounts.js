@@ -20,7 +20,7 @@ const AccountSchema = new mongoose.Schema({
 const Account = mongoose.models.Account_Personal || mongoose.model('Account_Personal', AccountSchema)
 export default Account
 
-export async function add(token, data){
+export async function addAccount(token, data){
   try {
     await dbConnect()
     data.userId = (await getIdbyToken(token)).userId;
@@ -45,7 +45,7 @@ export async function getAccounts(token){
   }
 }
 
-export async function del(token, id){
+export async function delAccount(token, id){
   try {
     await dbConnect()
     let userId = (await getIdbyToken(token)).userId;
