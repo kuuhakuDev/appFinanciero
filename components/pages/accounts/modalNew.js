@@ -1,11 +1,12 @@
 import React, { useContext }from 'react'
-import NumberFormat from 'react-number-format';
+//import NumberFormat from 'react-number-format';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 import Modal from '../../core/Modal'
 import {AccountContext} from '../../context/accounts'
 import { useSnackbar } from 'notistack';
+import { sendDataApi } from '../../../util/api/apiManager'
 
 function getModalStyle() {
     const top = 50;
@@ -28,21 +29,21 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-function NumberFormatCustom(props) {
-    const { inputRef, onChange, ...other } = props;
+// function NumberFormatCustom(props) {
+//     const { inputRef, onChange, ...other } = props;
   
-    return (
-      <NumberFormat {...other} getInputRef={inputRef}  thousandSeparator isNumericString prefix=""
-      onValueChange={(values) => {onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
-          });
-        }}
-      />
-    );
-  }
+//     return (
+//       <NumberFormat {...other} getInputRef={inputRef}  thousandSeparator isNumericString prefix=""
+//       onValueChange={(values) => {onChange({
+//             target: {
+//               name: props.name,
+//               value: values.value,
+//             },
+//           });
+//         }}
+//       />
+//     );
+//   }
 
 export default function modalNew(props){
     
@@ -53,29 +54,17 @@ export default function modalNew(props){
 
     async function sendData(){
         let nameAccount = document.querySelector('#name-account-input').value
-        /* let saldoAccount = parseFloat(document.querySelector('#saldo-account-input').value.replaceAll(',', '')) */
         
-        fetch("http://localhost:3000/api/account", {
-            method: 'POST', // or 'PUT'
-            body: JSON.stringify({name: nameAccount/* , saldo: saldoAccount */}),
-            })
+        var api = "/account";
+        var method = "POST";
+        var data = {name: nameAccount/* , saldo: saldoAccount */};
+
+        sendDataApi(api, method, data)
         .then(res => {
-          var status = res.status;
-          var variant = (status >= 200 && status < 300)? "success": "error";
-          res.json().then(response => {
-            console.log(response);
-            let acc = accounts.map(function (element){return element});
-            acc.push(response.reply);
-            setAccounts(acc);
-            enqueueSnackbar(response.msg, { variant: variant });
-            console.log("El codigo de estado es -> " + status);
-          } );
-          
+          console.log(res);
+          if(res.data) setAccounts([...accounts, res.data]);
+          enqueueSnackbar(res.msg, { variant: res.variant });
         })
-        .catch(error => {
-          console.error('Error:', error)
-          enqueueSnackbar(error, { variant: 'error' });
-        });
         props.close();
     }
 

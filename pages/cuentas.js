@@ -35,9 +35,9 @@ export async function getServerSideProps(context) {
       }
   }
 
-  let response = JSON.parse(JSON.stringify((await getAccounts(session.accessToken))));
+  let accounts = JSON.parse(JSON.stringify((await getAccounts(session.accessToken))));
 
   return {
-    props: { session, reply: response }
+    props: { session, reply: accounts }
   }
 }
