@@ -76,7 +76,7 @@ function ResponsiveDrawer(props) {
             container={container}
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={props.mobileOpen}
+            open={props.open}
             onClose={props.toggle}
             classes={{
               paper: classes.drawerPaper,
@@ -103,13 +103,5 @@ function ResponsiveDrawer(props) {
     </>
   );
 }
-
-ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
 export default ResponsiveDrawer;
