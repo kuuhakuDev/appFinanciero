@@ -45,12 +45,20 @@ export async function getAccounts(token){
   }
 }
 
-export async function delAccount(token, id){
+export async function delAccount(token, ids){
   try {
     await dbConnect()
     let userId = (await getIdbyToken(token)).userId;
-    const deleted_account = await Account.deleteOne({_id: id, userId: userId});
-    return  {deleted: true};
+    console.log(ids);
+    const deleted_account = await Account.deleteMany(
+      { 
+        _id: {
+          $in: ids
+        }, 
+        userId: userId
+      });
+    console.log(deleted_account);
+    return  true;
   } 
   catch (error) {
     throw "Ocurrio un error al intentar eliminar la cuenta.";

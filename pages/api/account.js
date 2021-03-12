@@ -26,8 +26,9 @@ export default async (req, res) => {
         break;
   
       case "DELETE":
-        var param = [session.accessToken, JSON.parse(req.body).idAccount];
-        var property = resProperty(StatusCodes.OK, "La cuenta fue eliminada con exito.");
+        var idAccounts = JSON.parse(req.body).idAccounts;
+        var param = [session.accessToken, idAccounts];
+        var property = resProperty(StatusCodes.OK, idAccounts > 1? "Las cuentas fueron eliminadas con exito.": "La cuenta fue eliminada con exito.");
         await crud(delAccount, param, property);
         break;
         

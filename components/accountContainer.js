@@ -21,6 +21,7 @@ const columns = [
 ];
 
 const model = {
+  url: '/account',
   data: {
     name: '',
   },
@@ -35,9 +36,9 @@ export default function AccountsContainer(){
 
   return (
     <>
-      <FloatActionButton/>
+      {/* <FloatActionButton/> */}
       <div style={{ height: 450, width: '100%' }}>
-        <DataGridCRUD rows={rows} columns={columns} />
+        <DataGridCRUD rows={rows} columns={columns} model={model} context={accounts} setContext={setAccounts}/>
       </div>
     </>
   )
