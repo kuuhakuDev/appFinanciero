@@ -6,8 +6,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSnackbar } from 'notistack';
-import { sendDataApi } from '../../util/api/apiManager'
+import ModalNew from '../pages/accounts/modalNew';
 
 const useStyles = makeStyles((theme) => ({
   button:{
@@ -15,51 +14,50 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function dataGridCRUD({rows, columns, model, context, setContext}){
+export default function dataGridCRUD({columns, model, data}){
   const classes = useStyles();
 
+  const [rows, setRows] = useState(data.map((element) => {return {...element, id: element._id}}));
   const [selected, setSelected] = useState([]);
-  const [disableEdit, setDisableEdit] = useState(true);
-  const [loadingData, setLoadingData] = useState(false);
-  const [disableDelete, setDisableDelete] = useState(true);
-  const { enqueueSnackbar } = useSnackbar();
+  const [actionDisable, setActionDisable] = useState({edit: true, delete: true});
+  const [propsModal, setPropsModal] = useState({open: false, mode: ''});
 
-  function select(selection){
+  const handleOpen = () => {
+    setPropsModal((modal) => ({open: true, mode: modal.mode}));
+  };
+
+  const handleClose = () => {
+    setPropsModal((modal) => ({open: false, mode: modal.mode}));
+  };
+  
+
+  function selectRow(selection){
     var modelSelected = selection.selectionModel
     setSelected(modelSelected);
-    setDisableEdit((modelSelected.length != 1));
-    setDisableDelete((modelSelected.length < 1))
+    setActionDisable({
+      edit: (modelSelected.length != 1),
+      delete: (modelSelected.length < 1)
+    })
+  }
+
+  function dataCreate(){
+    setPropsModal((modal) => ({open: modal.open, mode: 'Crear'}));
+    handleOpen();
   }
 
   function dataDelete(){
-    setLoadingData(true);
-    setDisableDelete(true);
-    setDisableEdit(true);
+    setPropsModal((modal) => ({open: modal.open, mode: 'Eliminar'}));
+    handleOpen();
+  }
 
-    var api = "/account";
-    var method = "DELETE";
-    var data = {idAccounts: selected};
+  function dataEdit(){
+    let row = rows.find((r) => r.id == selected[0]);
+    for (const property in model.data) {
+      model.data[property] = row[property];
+    }
 
-    sendDataApi(api, method, data)
-    .then(res => {
-      console.log(res);
-      if(res.data) {
-        var newContext = [];
-        for (let i = 0; i < context.length; i++) {
-          const con = context[i];
-          var go = true;
-          for (let j = 0; j < selected.length && go; j++) {
-            const sel = selected[j];
-            if(con._id == sel) go = false;
-          }
-          if(go) newContext.push(con);
-        }
-        setContext([...newContext]);
-      }
-      enqueueSnackbar(res.msg, { variant: res.variant });
-      setLoadingData(false);
-    })
-    
+    setPropsModal((modal) => ({open: modal.open, mode: 'Editar'}));
+    handleOpen();
   }
 
   function ActionBar(){
@@ -69,9 +67,9 @@ export default function dataGridCRUD({rows, columns, model, context, setContext}
           <GridToolbar/>
         </Grid>
         <Grid>
-          <AcctionButton text='Crear' icon={AddIcon} color='primary' enabled={loadingData}/>
-          <AcctionButton text='Editar' icon={EditIcon} color='inherit' enabled={disableEdit}/>
-          <AcctionButton text='Eliminar' icon={DeleteIcon} color='secondary'enabled={disableDelete} fun={dataDelete}/>
+          <AcctionButton text='Crear' icon={AddIcon} color='primary' fun={dataCreate}/>
+          <AcctionButton text='Editar' icon={EditIcon} color='inherit' enabled={actionDisable.edit} fun={dataEdit}/>
+          <AcctionButton text='Eliminar' icon={DeleteIcon} color='secondary'enabled={actionDisable.delete} fun={dataDelete}/>
         </Grid>
       </Grid>
     )
@@ -79,9 +77,11 @@ export default function dataGridCRUD({rows, columns, model, context, setContext}
 
   return (
       <>
-        <DataGrid rows={loadingData? []: rows} columns={columns} pageSize={10} checkboxSelection  
-        onSelectionModelChange={select} components={{ Toolbar: ActionBar, }} 
-        disableSelectionOnClick={loadingData} loading={loadingData} disableColumnResize={false}/>
+        <DataGrid rows={rows} columns={columns} pageSize={10} checkboxSelection  
+        onSelectionModelChange={selectRow} components={{ Toolbar: ActionBar, }} disableColumnResize={false}/>
+
+        <ModalNew close={handleClose} model={model}  selected={selected} 
+                  propsModal={propsModal} setRows={setRows}/>
       </>
   )
 }
