@@ -1,10 +1,9 @@
-import React, { useContext }from 'react'
+import React from 'react'
 //import NumberFormat from 'react-number-format';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 import Modal from '../../core/Modal'
-import {AccountContext} from '../../context/accounts'
 import { useSnackbar } from 'notistack';
 import { sendDataApi } from '../../../util/api/apiManager'
 
@@ -45,47 +44,152 @@ const useStyles = makeStyles((theme) => ({
 //     );
 //   }
 
-export default function modalNew(props){
-    
-    const classes = useStyles();
-    const [modalStyle] = React.useState(getModalStyle); 
-    const [ accounts, setAccounts ] = useContext(AccountContext);
-    const { enqueueSnackbar } = useSnackbar();
+export default function modalNew({close, model, setRows, selected, propsModal, value}){
 
-    async function sendData(){
-        let nameAccount = document.querySelector('#name-account-input').value
+  return (
+    <Modal close={close} open={propsModal.open}>
+      {
+        (propsModal.mode == 'Crear')?
+          <AddModal model={model} mode={propsModal.mode} close={close} setState={setRows}/>:
+        (propsModal.mode == 'Eliminar')?
+          <DelModal model={model} mode={propsModal.mode} close={close} setState={setRows} selected={selected}/>:
         
-        var api = "/account";
-        var method = "POST";
-        var data = {name: nameAccount/* , saldo: saldoAccount */};
+          <EditModal model={model} mode={propsModal.mode} close={close} setState={setRows} />
+      }
+    </Modal>
+  )
+}
 
-        sendDataApi(api, method, data)
-        .then(res => {
-          console.log(res);
-          if(res.data) setAccounts([...accounts, res.data]);
-          enqueueSnackbar(res.msg, { variant: res.variant });
-        })
-        props.close();
+function AddModal ({ model, mode, close, setState }){
+  let fields = model.require;
+
+  const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle); 
+  const { enqueueSnackbar } = useSnackbar();
+
+  async function add(){
+
+    for (const property in model.data) {
+      model.data[property] = document.querySelector('#'+ property +'-input').value;
     }
 
-    const bodyModal = (
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Crear cuenta</h2>
-          <div>
-            <TextField id="name-account-input" label="Nombre de la cuenta"
-            helperText="25 caracteres como maximo" fullWidth margin="normal" inputProps={{ maxLength: 25 }}/>
-    
-            {/* <TextField id="saldo-account-input" label="Saldo inicial de la cuenta" helperText="Solo numeros"
-            fullWidth margin="normal" inputProps={{ maxLength: 25 }} InputProps={{inputComponent: NumberFormatCustom,}}/> */}
-    
-            <Button variant="contained" color="primary" onClick={sendData}>Crear</Button>
-          </div>
-        </div>
-      );
+    let method = 'POST';
+    sendDataApi(model.api, method, model.data)
+    .then(res => {
+      if(res.data){ 
+        res.data.id = res.data._id;
+        setState((state) => [...state, res.data]);
+      }
+      enqueueSnackbar(res.msg, { variant: res.variant });
+    })
+  }
 
-    return (
-        <Modal close={props.close} open={props.open}>
-            {bodyModal}
-        </Modal>
-    )
+  return (
+    <div style={modalStyle} className={classes.paper}>
+      <h2 id="simple-modal-title">Crear cuenta</h2>
+      <div>
+        {
+          fields.map((m, index) => (
+            <TextField key={index} id={m.name+'-input'} label={m.msg}
+            helperText={m.helper} fullWidth margin="normal" inputProps={m.inputProps}/>
+          ))
+        }
+        {/* <TextField id="saldo-account-input" label="Saldo inicial de la cuenta" helperText="Solo numeros"
+        fullWidth margin="normal" inputProps={{ maxLength: 25 }} InputProps={{inputComponent: NumberFormatCustom,}}/> */}
+
+        <Button variant="contained" color="primary" onClick={add}>{mode}</Button>
+        <Button variant="contained" onClick={close}>Cerrar</Button>
+      </div>
+    </div>
+  );
+}
+
+function EditModal ({ model, mode, close, setState }){
+  let fields = model.require;
+
+  const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle); 
+  const { enqueueSnackbar } = useSnackbar();
+
+  async function edit(){
+
+    for (const property in model.data) {
+      model.data[property] = document.querySelector('#'+ property +'-input').value;
+    }
+
+    let method = 'POST';
+    sendDataApi(model.api, method, model.data)
+    .then(res => {
+      if(res.data){ 
+        res.data.id = res.data._id;
+        setState((state) => [...state, res.data]);
+      }
+      enqueueSnackbar(res.msg, { variant: res.variant });
+    })
+  }
+
+  return (
+    <div style={modalStyle} className={classes.paper}>
+      <h2 id="simple-modal-title">Editar cuenta</h2>
+      <div>
+        {
+          fields.map((m, index) => (
+            <TextField key={index} id={m.name+'-input'} label={m.msg} helperText={m.helper}
+            fullWidth margin="normal" inputProps={m.inputProps} value={model.data[m.name]}/>
+          ))
+        }
+        {/* <TextField id="saldo-account-input" label="Saldo inicial de la cuenta" helperText="Solo numeros"
+        fullWidth margin="normal" inputProps={{ maxLength: 25 }} InputProps={{inputComponent: NumberFormatCustom,}}/> */}
+
+        <Button variant="contained" color="primary" onClick={edit}>{mode}</Button>
+        <Button variant="contained" onClick={close}>Cerrar</Button>
+      </div>
+    </div>
+  );
+}
+
+function DelModal ({ model, mode, close, setState, selected }){
+
+  const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle); 
+  const { enqueueSnackbar } = useSnackbar();
+
+  function removeToArray(state){
+    var newRows = [];
+    for (let i = 0; i < state.length; i++) {
+      const con = state[i];
+      var go = true;
+      for (let j = 0; j < selected.length && go; j++) {
+        const sel = selected[j];
+        if(con._id == sel) go = false;
+      }
+      if(go) newRows.push(con);
+    }
+    return newRows
+  }
+
+  function del(){
+    var method = "DELETE";
+    var data = {idAccounts: selected};
+
+    sendDataApi(model.api, method, data)
+    .then(res => {
+      console.log(res);
+      if(res.data) {
+        setState((state) => (removeToArray(state)));
+      }
+      enqueueSnackbar(res.msg, { variant: res.variant });
+    })
+    close();
+  }
+
+  return (
+    <div style={modalStyle} className={classes.paper}>
+      <h2 id="simple-modal-title">Esta seguro que quiere eliminar estos datos?</h2>
+      <div>
+        <Button variant="contained" color="secondary" onClick={del}>{mode}</Button>
+        <Button variant="contained" onClick={close}>Cerrar</Button>
+      </div>
+    </div>
+  );
 }
