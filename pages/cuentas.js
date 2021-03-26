@@ -1,6 +1,5 @@
 import { getAccounts } from '../util/database/model/modelAccounts'
 import LayoutApp from '../components/layoutApp'
-import AccountsProvider from '../components/context/accounts'
 import AccountsContainer from '../components/accountContainer'
 import { useSession, getSession } from 'next-auth/client'
 import { SnackbarProvider } from 'notistack';
@@ -16,9 +15,7 @@ export default function Cuentas({reply}) {
   return (
     <SnackbarProvider maxSnack={3}>
       <LayoutApp title="Cuentas" avatar={session.user.image}>
-        <AccountsProvider value={reply}>
-          <AccountsContainer/>
-        </AccountsProvider>
+        <AccountsContainer data={reply}/>
       </LayoutApp>
     </SnackbarProvider>
   )
