@@ -1,6 +1,4 @@
 import React, { useContext } from 'react'
-import FloatActionButton from '../components/core/floatActionButton'
-import CuentaItem from '../components/core/cuentaItem'
 import {AccountContext} from '../components/context/accounts'
 import DataGridCRUD from '../components/core/dataGridCRUD';
 
@@ -21,24 +19,21 @@ const columns = [
 ];
 
 const model = {
-  url: '/account',
+  api: '/account',
   data: {
     name: '',
   },
   require: [
-    {name: 'name', msg: 'Nombre de la cuenta'}
+    {name: 'name', msg: 'Nombre de la cuenta', helper: "25 caracteres como maximo", inputProps: { maxLength: 25 }}
   ]
 }
 
-export default function AccountsContainer(){
-  const [ accounts, setAccounts ] = useContext(AccountContext);
-  var rows = accounts.map((acc) => {return {...acc, id: acc._id}});
+export default function AccountsContainer({data}){
 
   return (
     <>
-      {/* <FloatActionButton/> */}
-      <div style={{ height: 450, width: '100%' }}>
-        <DataGridCRUD rows={rows} columns={columns} model={model} context={accounts} setContext={setAccounts}/>
+      <div style={{ height: 505, width: '100%' }}>
+        <DataGridCRUD columns={columns} model={model} data={data}/>
       </div>
     </>
   )
