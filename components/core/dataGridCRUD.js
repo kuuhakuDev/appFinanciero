@@ -6,7 +6,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import ModalNew from '../pages/accounts/modalNew';
+import ModalCRUD from '../pages/accounts/ModalCRUD';
 
 const useStyles = makeStyles((theme) => ({
   button:{
@@ -82,7 +82,7 @@ export default function dataGridCRUD({columns, model, data}){
         <DataGrid rows={rows} columns={columns} pageSize={10} checkboxSelection  
         onSelectionModelChange={selectRow} components={{ Toolbar: ActionBar, }} disableColumnResize={false}/>
 
-        <ModalNew close={handleClose} model={model}  selected={selected} 
+        <ModalCRUD close={handleClose} model={model}  selected={selected} 
                   propsModal={propsModal} setRows={setRows}/>
       </>
   )

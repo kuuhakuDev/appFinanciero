@@ -10,7 +10,7 @@ import { sendDataApi } from '../../../util/api/apiManager'
 function getModalStyle() {
     const top = 50;
     const left = 50;
-  
+
     return {
       top: `${top}%`,
       left: `${left}%`,
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 // function NumberFormatCustom(props) {
 //     const { inputRef, onChange, ...other } = props;
-  
+
 //     return (
 //       <NumberFormat {...other} getInputRef={inputRef}  thousandSeparator isNumericString prefix=""
 //       onValueChange={(values) => {onChange({
@@ -53,7 +53,6 @@ export default function modalNew({close, model, setRows, selected, propsModal, v
           <AddModal model={model} mode={propsModal.mode} close={close} setState={setRows}/>:
         (propsModal.mode == 'Eliminar')?
           <DelModal model={model} mode={propsModal.mode} close={close} setState={setRows} selected={selected}/>:
-        
           <EditModal model={model} mode={propsModal.mode} close={close} setState={setRows} />
       }
     </Modal>
@@ -64,7 +63,7 @@ function AddModal ({ model, mode, close, setState }){
   let fields = model.require;
 
   const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle); 
+  const [modalStyle] = React.useState(getModalStyle);
   const { enqueueSnackbar } = useSnackbar();
 
   async function add(){
@@ -76,7 +75,7 @@ function AddModal ({ model, mode, close, setState }){
     let method = 'POST';
     sendDataApi(model.api, method, model.data)
     .then(res => {
-      if(res.data){ 
+      if(res.data){
         res.data.id = res.data._id;
         setState((state) => [...state, res.data]);
       }
@@ -108,7 +107,7 @@ function EditModal ({ model, mode, close, setState }){
   let fields = model.require;
 
   const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle); 
+  const [modalStyle] = React.useState(getModalStyle);
   const { enqueueSnackbar } = useSnackbar();
 
   async function edit(){
@@ -120,7 +119,7 @@ function EditModal ({ model, mode, close, setState }){
     let method = 'POST';
     sendDataApi(model.api, method, model.data)
     .then(res => {
-      if(res.data){ 
+      if(res.data){
         res.data.id = res.data._id;
         setState((state) => [...state, res.data]);
       }
@@ -151,7 +150,7 @@ function EditModal ({ model, mode, close, setState }){
 function DelModal ({ model, mode, close, setState, selected }){
 
   const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle); 
+  const [modalStyle] = React.useState(getModalStyle);
   const { enqueueSnackbar } = useSnackbar();
 
   function removeToArray(state){
