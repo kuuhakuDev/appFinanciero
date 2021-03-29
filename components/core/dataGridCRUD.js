@@ -60,11 +60,13 @@ export default function dataGridCRUD({columns, model, data}){
     handleOpen();
   }
 
+  const ToolBar = React.memo(GridToolbar);
+
   function ActionBar(){
     return (
       <Grid container justify="space-between">
         <Grid className={classes.button} xs={12} md={6}>
-          <GridToolbar/>
+          <ToolBar/>
         </Grid>
         <Grid>
           <AcctionButton text='Crear' icon={AddIcon} color='primary' fun={dataCreate}/>
@@ -86,7 +88,7 @@ export default function dataGridCRUD({columns, model, data}){
   )
 }
 
-function AcctionButton(props){
+  const AcctionButton = React.memo((props) => {
   const classes = useStyles();
 
   let fun = props.fun;
@@ -95,7 +97,7 @@ function AcctionButton(props){
   let color = props.color;
   let enabled = props.enabled;
   return(
-    <Button 
+    <Button
       onClick={fun}
       className={classes.button}
       size={'small'}
@@ -106,4 +108,4 @@ function AcctionButton(props){
       {text}
     </Button>
   )
-}
+})
