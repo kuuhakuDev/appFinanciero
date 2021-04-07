@@ -113,14 +113,15 @@ function ModalLayout({title, children, fun, mode, close}){
   )
 }
 
-async function CRUD({method, model, setState, selected, setActionDisable, enqueueSnackbar}){
+function CRUD({method, model, setState, selected, setActionDisable, enqueueSnackbar}){
 
   var data = null;
   if(method != "DELETE"){
     for (const property in model.data) {
+      console.log('#'+ property +'-input');
       model.data[property] = document.querySelector('#'+ property +'-input').value;
     }
-    data = model.data;
+    data = {...model.data};
     if(method == "PUT"){
       data._id = selected[0];
     }
