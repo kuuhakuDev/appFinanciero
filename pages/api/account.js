@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/client';
-import { addAccount, getAccounts, delAccount } from '../../util/database/model/modelAccounts';
+import { addAccount, getAccounts, delAccount, editAccount } from '../../util/database/model/modelAccounts';
 import { StatusCodes }  from 'http-status-codes';
 
 export default async (req, res) => {
@@ -22,7 +22,9 @@ export default async (req, res) => {
         break;
       
       case "PUT":
-          
+        var param = [session.accessToken, JSON.parse(req.body)];
+        var property = resProperty(StatusCodes.CREATED, "La cuenta fue editada con exito.");
+        await crud(editAccount, param, property);
         break;
   
       case "DELETE":

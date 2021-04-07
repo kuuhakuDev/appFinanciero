@@ -45,6 +45,23 @@ export async function getAccounts(token){
   }
 }
 
+export async function editAccount(token, data){
+  try {
+    await dbConnect()
+    var userId = (await getIdbyToken(token)).userId;
+    console.log(data);
+    const edit = await Account.updateOne({userId: userId, _id: data._id}, data);
+    const account = await Account.find({userId: userId, _id: data._id});
+    console.log(account);
+    console.log("Paso primera prueba");
+    return account;
+  } 
+  catch (error) {
+    console.log(error);
+    throw "Ocurrio un error al intentar editar la cuenta.";
+  }
+}
+
 export async function delAccount(token, ids){
   try {
     await dbConnect()

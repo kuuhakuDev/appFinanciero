@@ -83,7 +83,7 @@ export default function dataGridCRUD({columns, model, data}){
         onSelectionModelChange={selectRow} components={{ Toolbar: ActionBar, }} disableColumnResize={false}/>
 
         <ModalCRUD close={handleClose} model={model}  selected={selected} 
-                  propsModal={propsModal} setRows={setRows}/>
+                  propsModal={propsModal} setRows={setRows} setActionDisable={setActionDisable}/>
       </>
   )
 }
