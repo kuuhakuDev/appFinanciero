@@ -16,7 +16,7 @@
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.12",
     "next": "latest",
-    "next-auth": "^3.1.0",
+    "next-auth": "^3.29.8",
     "notistack": "^1.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
